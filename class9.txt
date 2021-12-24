@@ -1,0 +1,441 @@
+how to handle alert pop in selenium?			VVVVVVIMP
+====================================================================
+	
+	- We have alert pop witj the help of Alert interface in selenium.
+	first we have to switch to alert pop with the help of switchTo() method
+	- under Alert interface there 4 methods are Available
+		1) accept() method		-	it will check on "Ok" button
+		2)dismiss() method		-	it will check on "Cancel" button
+		3) getText() method		- it will capture 	physical text in alert pop
+		4) sendKeys() method	- it will send text in alert pop text box.
+==================================================================================
+
+	we handle aler pop in selenium with the help of Alert interface
+	first we have switch focus from main windwo to alert window
+		driver.switchTo().alert();
+
+	return type on alert() method is Alert interface
+
+	Alert a =driver.switchTo().alert();
+	
+	Alert interface contain 4 methods are available
+	1) it u want click on Ok button then we have use 
+	accept method
+		return type is void
+	syntax:
+		AlertInterfaceObject.accept();	
+	
+	2) if u want click on cancel button then we have use dismiss() method
+		return type is void
+		syntax:
+		AlertInterfaceObject.dismiss();
+
+	3) if u want capture physical text in alert pop then we have getText() method
+			return type is String
+	syntax:
+		AlertInterfaceObject.getText();
+
+	4) if u want send Data in alert pop then we have use sendKeys() method 
+		return type is void
+		syntax:
+		AlertInterfaceObject.sendKeys();
+
+--------
+	Alert a =driver.switchTo().alert();
+	
+	a.accept();
+	a.dimiss();
+	a.getText();
+	a.sendKeys();
+
+==================================
+package SeleniumClass8;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Demo1 {
+
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver",
+				"C:\\Users\\l470\\Desktop\\24OctAutomation Batch\\Selenium setup\\chromedriver_win32 (5)\\chromedriver.exe");
+
+		WebDriver driver = new ChromeDriver();
+		
+		driver.get("https://mail.rediff.com/cgi-bin/login.cgi");
+		
+		Thread.sleep(4000);
+		
+		driver.findElement(By.name("proceed")).click();
+		
+		// we have to switch focus form main window to alert window
+		// we switch focus from main window to alert window with the help of switchTo().alert() method
+
+		
+		Alert a=driver.switchTo().alert();
+
+		//if u want capture physical text in alert pop then we have use
+		//getText() method---- return type is String
+		
+		
+		String abc =a.getText();
+		
+		System.out.println(abc);
+		
+		// if u want click on okk button then we have use accept() method
+		Thread.sleep(2000);
+		
+		a.accept();
+		
+		Thread.sleep(4000);
+		driver.close();
+				
+	}
+}
+
+===========================================================
+scenario:
+	enter text in username 
+	click on login button
+	capture alert pop text
+	click on cancel button
+	then enter password
+
+
+
+package SeleniumClass8;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Demo2 {
+
+//	scenario:
+//		enter text in username 
+//		click on login button
+//		capture alert pop text
+//		click on cancel button
+//		then enter password
+		
+	public static void main(String[] args) throws InterruptedException {
+
+		System.setProperty("webdriver.chrome.driver",
+				"C:\\Users\\l470\\Desktop\\24OctAutomation Batch\\Selenium setup\\chromedriver_win32 (5)\\chromedriver.exe");
+
+		WebDriver driver = new ChromeDriver();	
+		driver.manage().window().maximize();
+		driver.get("file:///C:/Users/l470/Desktop/HTML%20Code/alertHtml.html");
+		
+		driver.findElement(By.name("uname")).sendKeys("Admin");
+		Thread.sleep(4000);
+		driver.findElement(By.xpath("//button[text()='Login']")).click();
+		// we are switching focus from main window to alert window.
+		Alert act=driver.switchTo().alert();
+		//we are capturing physical text in alert pop
+		String a =act.getText();
+		System.out.println(a);
+		Thread.sleep(4000);
+		// if u want click in cancel button then we have to use dismiss() method
+		act.dismiss();
+		
+		
+		driver.findElement(By.name("psw")).sendKeys("abc");
+		
+		Thread.sleep(4000);
+		
+		driver.close();
+	
+	}
+
+}
+=======================================================
+scenario:
+	1) enter username
+	2) click on login button
+	3) enter text in alert pop
+	4) click on ok button
+	5) capture alert pop text
+	6) add verification point
+	7) click on ok button
+	8) enter password
+
+
+package SeleniumClass8;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Demo3 {
+
+//1) enter User name
+//2) click on login button
+//3) enter text in alert pop
+//4) click on ok button
+//5) capture alert pop text
+//6) add verification point
+//7) click on ok button
+//8) enter password
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver",
+				"C:\\Users\\l470\\Desktop\\24OctAutomation Batch\\Selenium setup\\chromedriver_win32 (5)\\chromedriver.exe");
+
+		WebDriver driver =new ChromeDriver();
+		
+		driver.get("file:///C:/Users/l470/Desktop/HTML%20Code/alertPopUp.html");
+		
+		driver.findElement(By.name("uname")).sendKeys("Admin");
+		Thread.sleep(3000);
+		
+		driver.findElement(By.xpath("//button[text()='Login']")).click();
+		
+		Alert a =driver.switchTo().alert();
+		//if u want enter value in alert text box then we have use sendKeys()
+		Thread.sleep(4000);
+		
+		String name="Ekta";
+		
+		a.sendKeys(name); (// enter text in alert pop)
+		
+		Thread.sleep(2000);
+		a.accept();      (// click on ok button )
+ 		
+		String alertText=a.getText();(// capture alert pop text )
+		
+		if(alertText.contains(name))
+		{
+			System.out.println("Test case is pass");
+		}else {
+			System.out.println("text case is fail");
+		}
+		Thread.sleep(4000);
+		
+		a.accept();
+		
+		driver.findElement(By.name("psw")).sendKeys("abc");
+		Thread.sleep(4000);
+		
+		driver.close();
+	
+		
+	}
+
+}
+=================================================================================
+operation on checkbox
+	- displayed
+	- enabled 
+	- selected
+	- click
+	- deselect
+	- select multiple check box
+	- deselect multiple check box
+package SeleniumClass8;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Demo4 {
+
+//	- displayed
+//	- enabled 
+//	- selected
+//	- click
+//	- deselect
+//	- select multiple check box
+//	- deselect multiple check box
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver",
+				"C:\\Users\\l470\\Desktop\\24OctAutomation Batch\\Selenium setup\\chromedriver_win32 (5)\\chromedriver.exe");
+
+		WebDriver driver =new ChromeDriver();
+
+		//Method overloading
+		driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		
+		driver.manage().window().maximize();
+		
+		driver.get("file:///C:/Users/l470/Desktop/HTML%20Code/checkBox.html");
+		
+		WebElement wb =driver.findElement(By.id("vehicle1"));
+		System.out.println(wb.isDisplayed());//true
+		System.out.println(wb.isEnabled()); //true
+		System.out.println(wb.isSelected());// false
+		Thread.sleep(4000);
+		wb.click();
+		Thread.sleep(3000);
+		System.out.println(wb.isSelected());// true
+		
+		System.out.println("----------- vehicle 1 ended ..---------------");
+		System.out.println("------------ vehicle 2 Started -----------");
+		
+		
+		WebElement wb2=driver.findElement(By.id("vehicle2"));
+		System.out.println(wb2.isSelected());//false
+		wb2.click();
+		System.out.println(wb2.isSelected());//true
+		System.out.println("------------ vehicle 2 Ended -----------");
+		
+		System.out.println("------------ vehicle 3 Started -----------");
+		WebElement wb3=driver.findElement(By.id("vehicle3"));
+		System.out.println(wb3.isSelected());//false
+		wb3.click();
+		System.out.println(wb3.isSelected());//true
+		System.out.println("------------ vehicle 3 Ended -----------");
+		
+		
+		
+		
+	}
+}
+
+========================================================================
+Relative xpath syntax:
+	
+1) single attribute xpath
+	//*[@attribute='value']
+
+	tagName : which tag we are looking
+	@attribute  attibute name
+	value  value for specific attribute
+	//it will search specific element through the page
+
+	 * it will all tags in web page
+	
+---
+
+//input[@id ='txtUsername']
+
+
+package SeleniumClass8;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Demo5 {
+
+	public static void main(String[] args) throws InterruptedException {
+		System.setProperty("webdriver.chrome.driver",
+				"C:\\Users\\l470\\Desktop\\24OctAutomation Batch\\Selenium setup\\chromedriver_win32 (5)\\chromedriver.exe");
+
+		WebDriver driver =new ChromeDriver();
+		
+		driver.get("https://opensource-demo.orangehrmlive.com/");
+		
+		
+		driver.findElement(By.xpath("//input[@name='txtUsername']")).sendKeys("Admin");
+		
+		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("admin123");
+		
+
+		driver.findElement(By.xpath("//input[@value='LOGIN']")).click();
+		
+			
+		Thread.sleep(4000);
+		
+	boolean a=driver.findElement(By.xpath("//img[@alt='OrangeHRM']")).isDisplayed();
+		System.out.println(a);
+		
+		Thread.sleep(4000);
+		driver.close();
+		
+		
+		
+	}
+}
+====================================================
+
+//input[@class='gLFyf gsfi']
+//img[@alt='Google']
+
+
+2 attribute in page
+
+//tagname[@attribute1='value'][@attribute='value']
+
+
+//input[@id='email'][@type='text']
+
+
+And OR Operator
+
+//tagname[@attribute1='value' or @attribute='value']
+
+//a[@href='/index.php/time/viewTimeModule' and @id='menu_time_viewTimeModule']
+
+
+//input[@class='inputtext _9o1w' or @type='text']
+
+
+//input[@dir='ltr' and @name='email']
+
+=================
+Relative xpath with contains() method
+
+//tagname[contains(@attribute,'value')]
+
+
+//input[contains(@name,'email')]
+
+//img[contains(@src,'/webres_6051af48107ce6.31500353/themes/default/images/login/logo.png')]
+
+//div[contains(@class,'ui fluid large blue submit button')]
+
+//tagname[contains(text(),'value')]
+
+
+//button[contains(text(),'Login')]
+
+
+//button[text()='Cancel']
+
+
+
+//a[contains(text(),'Forgotten password?')]
+
+//a[text()='Forgotten password?']
+
+//a[contains(text(),'Forgot your password?')]
+
+
+//a[text()='Forgot your password?']
+
+
+//a[contains(text(),'Best Sellers') and @data-csa-c-slot-id='nav_cs_1']
+
+======================================================
+
+https://opensource-demo.orangehrmlive.com/
+
+==============================================
+
+WebDriver Interface:
+	1) Webdriver
+	2) Navigation
+	3) Options
+	4) Timeouts
+	5) Window
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
